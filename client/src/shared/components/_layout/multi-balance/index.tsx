@@ -50,13 +50,16 @@ class Balances extends Component<BalanceProps, BalanceState> {
     const { balance: zephBalance } = this.props.balances[Ticker.ZEPH_V2]!;
 
     const { isSyncing, blockHeight, scannedHeight } = this.props.syncState;
-    const percentage = ((scannedHeight / blockHeight) * 100).toFixed(2);
+
+    // A fresh wallet reports height 1 until it has scanned something, and blockHeight
+    // is pinned to 1 while the target is unknown; a percentage would then read 0.00%.
+    const percentage = blockHeight > 1 && scannedHeight > 1 ? ((scannedHeight / blockHeight) * 100).toFixed(2) : null;
 
     return (
       <Wrapper onClick={() => this.props.togglePrivacyDisplay()}>
         <Amount isSyncing={isSyncing}>{this.handleSync(isSyncing, balance || zephBalance, !balance)}</Amount>
-        <Value>{isSyncing ? `Syncing Wallet... ${percentage}%` : balance && balance > 0 ? `Total Balance (USD) ` : "Balance (ZEPH)"}</Value>
-        {isSyncing && <ProgressBar percentage={percentage} />}
+        <Value>{isSyncing ? `Syncing Wallet...${percentage ? ` ${percentage}%` : ""}` : balance && balance > 0 ? `Total Balance (USD) ` : "Balance (ZEPH)"}</Value>
+        {isSyncing && percentage !== null && <ProgressBar percentage={percentage} />}
       </Wrapper>
     );
   }

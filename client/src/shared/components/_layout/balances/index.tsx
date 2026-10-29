@@ -48,16 +48,17 @@ class Balances extends Component<BalanceProps, BalanceState> {
     const { unlockedBalance, lockedBalance } = this.props.balances[ticker];
     const { isSyncing, blockHeight, scannedHeight } = this.props.syncState;
 
-    const amount = (scannedHeight / blockHeight) * 100;
-    const percentage = amount.toFixed(2);
+    // A fresh wallet reports height 1 until it has scanned something, and blockHeight
+    // is pinned to 1 while the target is unknown; a percentage would then read 0.00%.
+    const percentage = blockHeight > 1 && scannedHeight > 1 ? ((scannedHeight / blockHeight) * 100).toFixed(2) : null;
 
     return (
       <Wrapper onClick={() => this.onClickNext()}>
         <Amount isSyncing={isSyncing}>
           {unlockedBalance === NO_BALANCE ? <Spinner /> : convertBalanceToMoney(unlockedBalance)}
         </Amount>
-        <Value>{isSyncing ? `Syncing Wallet... ${percentage}%` : ticker + " Balance"}</Value>
-        {isSyncing && <ProgressBar percentage={percentage} />}
+        <Value>{isSyncing ? `Syncing Wallet...${percentage ? ` ${percentage}%` : ""}` : ticker + " Balance"}</Value>
+        {isSyncing && percentage !== null && <ProgressBar percentage={percentage} />}
         {lockedBalance.greater(0) ? (
           <Pending>
             You have {convertBalanceToMoney(lockedBalance) + " " + ticker} pending.
