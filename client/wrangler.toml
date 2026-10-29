@@ -1,0 +1,12 @@
+# Cloudflare Pages configuration for the web wallet.
+#
+# The project name is intentionally generic: change it to the Pages project you
+# create (or set it in the dashboard / with `wrangler pages deploy`).
+name = "zephyr-wallet-fork"
+compatibility_date = "2024-09-23" # >= 2024-09-02, required for non-standard upstream ports
+pages_build_output_dir = "./build"
+
+[vars]
+# Public mainnet daemon used by the RPC proxy in functions/[[path]].js.
+# Override per environment in the Pages dashboard; do not put secrets here.
+ZEPHYR_RPC_URL = "http://remote-node.zephyrprotocol.com:17767"
