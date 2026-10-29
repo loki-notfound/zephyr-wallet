@@ -15,7 +15,7 @@
     "redux-thunk": "^2.4.2",
     "redux-watch": "^1.2.0",
     "styled-components": "^5.3.6",
-    "zephyr-javascript": "github:ZephyrProtocol/zephyr-javascript"
+    "zephyr-javascript": "git+https://github.com/ZephyrProtocol/zephyr-javascript.git#9d022ded2a8d188127173aa7cf79fdd5ee006353"
   },
   "scripts": {
     "analyze": "npx webpack-bundle-analyzer './build/bundle-stats.json'",
