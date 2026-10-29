@@ -30,7 +30,7 @@ export const startWalletSession = (walletName: string | undefined = undefined) =
 
     // initialize own connection to daemon ( needed for fetching block headers )
     dispatch({ type: START_WALLET_SESSION, payload: walletName });
-    dispatch(connectAppToDaemon());
+    await dispatch(connectAppToDaemon());
     // fetch latest prices once at start
     dispatch(getLastBlockHeader());
 
