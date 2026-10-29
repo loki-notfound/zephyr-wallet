@@ -10,6 +10,7 @@ export const createDaemonConnection = async (rpcConnection: IMonerRPCConnection)
 };
 
 export const getLastBlockHeader = () => {
+  if (!daemon) throw new Error("Daemon connection is not initialised");
   return daemon.getLastBlockHeader();
 };
 
